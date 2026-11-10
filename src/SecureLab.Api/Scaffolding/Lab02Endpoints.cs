@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SecureLab.Api.Security;
 using System.Security.Claims;
 using SecureLab.Api.Data;
 using SecureLab.Api.Data.Entities;
@@ -42,7 +43,7 @@ public static class Lab02Endpoints
                     row.Severity.ToString(), row.Status.ToString(), row.CreatedAtUtc))
                 .ToListAsync(ct);
             return Results.Ok(rows);
-        });
+        }).RequireRateLimiting(Lab03Identity.SearchPolicy);
         app.MapPost("/api/incidents", async (CreateIncidentRequest request, HttpContext context, SecureLabDbContext db, CancellationToken ct) =>
         {
             var now = DateTimeOffset.UtcNow;
@@ -91,7 +92,7 @@ public static class Lab02Endpoints
             return Results.Created($"/api/incidents/{incident.Id}", new CreatedIncidentResponse(
                 incident.Id, incident.Title, incident.Description, incident.Severity.ToString(),
                 incident.Status.ToString(), incident.OccurredAtUtc, incident.CreatedAtUtc, incident.UpdatedAtUtc));
-        }).RequireAuthorization();
+        }).RequireAuthorization().AddEndpointFilter<CsrfProtection>();
     }
 }
 

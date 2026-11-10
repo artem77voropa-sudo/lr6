@@ -1,4 +1,6 @@
 using SecureLab.Api.Scaffolding;
+using SecureLab.Api.Security;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SecureLab.Api.Application.Incidents;
@@ -12,6 +14,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 });
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<SafeExceptionHandler>();
 
 var connectionString = builder.Configuration.GetConnectionString("SecureLab")
     ?? throw new InvalidOperationException(
@@ -24,6 +27,15 @@ builder.Services.AddScoped<IncidentAccess>();
 builder.Services.AddScoped<IncidentQueries>();
 
 builder.AddLab03Identity();
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = CsrfProtection.Header;
+    options.Cookie.Name = ".SecureLab.LR06.Antiforgery";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+});
 
 // Temporary teaching origin; production uses the same-origin client.
 if (builder.Environment.IsDevelopment())
@@ -45,22 +57,23 @@ if (resetRequested)
     return;
 }
 
-app.UseExceptionHandler();
-app.UseStatusCodePages();
-
+// Register before the exception handler; OnStarting reapplies headers after error response clearing.
 app.Use(async (context, next) =>
 {
-    context.Response.Headers.XContentTypeOptions = "nosniff";
-    context.Response.Headers["Referrer-Policy"] = "no-referrer";
-    // Scalar is a separate Development-only UI with its own resource requirements.
-    if (!(app.Environment.IsDevelopment() && context.Request.Path.StartsWithSegments("/scalar")))
+    context.Response.OnStarting(() =>
     {
-        context.Response.Headers["Content-Security-Policy"] =
-            "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; " +
-            "img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
-    }
+        context.Response.Headers.XContentTypeOptions = "nosniff";
+        context.Response.Headers["Referrer-Policy"] = "no-referrer";
+        if (!(app.Environment.IsDevelopment() && context.Request.Path.StartsWithSegments("/scalar")))
+            context.Response.Headers["Content-Security-Policy"] =
+                "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; " +
+                "img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
+        return Task.CompletedTask;
+    });
     await next(context);
 });
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 if (app.Environment.IsDevelopment())
 {
@@ -86,6 +99,12 @@ app.MapGet("/health", async (SecureLabDbContext dbContext, CancellationToken can
     .WithName("GetHealth")
     .Produces(StatusCodes.Status200OK)
     .ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+
+var csrfTokenEndpoint = app.MapGet(CsrfProtection.TokenRoute, (HttpContext context, IAntiforgery antiforgery) =>
+    Results.Ok(new { token = antiforgery.GetAndStoreTokens(context).RequestToken }))
+    .RequireAuthorization();
+if (app.Environment.IsDevelopment())
+    csrfTokenEndpoint.WithMetadata(new Microsoft.AspNetCore.Cors.DisableCorsAttribute());
 
 app.MapIncidentEndpoints();
 app.MapIncidentMutationEndpoints();

@@ -1,0 +1,87 @@
+{
+  "profile": "Development, real HTTP localhost:5086",
+  "facts": [
+    {
+      "scenario": "successful login",
+      "status": 204
+    },
+    {
+      "scenario": "failed login",
+      "status": 401,
+      "safeBody": {
+        "type": "https://tools.ietf.org/html/rfc9110#section-15.5.2",
+        "title": "Не вдалося увійти",
+        "status": 401,
+        "detail": "Перевірте ім’я користувача та пароль.",
+        "traceId": "00-fe51869cf89fcd5968ffae6712043323-e40cdb1094af213e-00"
+      }
+    },
+    {
+      "scenario": "headers and validation",
+      "path": "/",
+      "status": 200,
+      "headers": {
+        "Content-Type": "text/html",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+      }
+    },
+    {
+      "scenario": "headers and validation",
+      "path": "/api/me",
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+      }
+    },
+    {
+      "scenario": "headers and validation",
+      "path": "/api/incidents?status=Unknown",
+      "status": 400,
+      "headers": {
+        "Content-Type": "application/problem+json",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+      }
+    },
+    {
+      "scenario": "headers and validation",
+      "path": "/api/incidents/99999999-9999-9999-9999-999999999999",
+      "status": 404,
+      "headers": {
+        "Content-Type": "application/problem+json",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "no-referrer",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+      }
+    },
+    {
+      "scenario": "REG-CSRF-01",
+      "withoutToken": 400,
+      "unchanged": true,
+      "withToken": 204,
+      "changed": true
+    },
+    {
+      "scenario": "denied protected action",
+      "subject": "Alice / Reporter",
+      "resource": "dc6eb1f3-6e82-44ac-a74f-f6bf004f65f8",
+      "status": 403,
+      "state": "New",
+      "traceId": "00-e73e8f643355747951da217eac30de13-32569fb3c4adde41-00"
+    },
+    {
+      "scenario": "privileged transition",
+      "subject": "Morgan / Analyst",
+      "resource": "dc6eb1f3-6e82-44ac-a74f-f6bf004f65f8",
+      "status": 204,
+      "state": "Triaged"
+    }
+  ],
+  "fixtureDeleted": true
+}

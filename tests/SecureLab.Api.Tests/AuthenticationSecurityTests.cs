@@ -54,7 +54,7 @@ public sealed class AuthenticationSecurityTests(SecureLabApiFactory factory) : I
 
     private static Dictionary<string, object> IncidentBody(string title) => new()
     {
-        ["title"] = title, ["description"] = "Синтетичний опис для перевірки власника.",
+        ["title"] = title, ["description"] = "РЎРёРЅС‚РµС‚РёС‡РЅРёР№ РѕРїРёСЃ РґР»СЏ РїРµСЂРµРІС–СЂРєРё РІР»Р°СЃРЅРёРєР°.",
         ["severity"] = "Low", ["occurredAtUtc"] = "2026-09-01T10:00:00Z"
     };
 
@@ -64,6 +64,7 @@ public sealed class AuthenticationSecurityTests(SecureLabApiFactory factory) : I
     public async Task A04_A05_BobCreates_OwnerAlwaysComesFromPrincipal(bool forgeOwner)
     {
         using var client = await factory.LoginAsync("bob", Password);
+        await client.UseAntiforgeryTokenAsync();
         var title = $"LR03-owner-{Guid.NewGuid():N}";
         var body = IncidentBody(title);
         if (forgeOwner) body["ownerUserId"] = DbSeeder.AliceId;
@@ -87,6 +88,7 @@ public sealed class AuthenticationSecurityTests(SecureLabApiFactory factory) : I
         using var client = await factory.LoginAsync("alice", Password);
         using var before = await client.GetAsync("/api/me");
         Assert.Equal(HttpStatusCode.OK, before.StatusCode);
+        await client.UseAntiforgeryTokenAsync();
         using var logout = await client.PostAsync("/api/auth/logout", null);
         Assert.Equal(HttpStatusCode.NoContent, logout.StatusCode);
         using var after = await client.GetAsync("/api/me");

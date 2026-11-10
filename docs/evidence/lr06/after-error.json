@@ -1,0 +1,17 @@
+{
+  "stage": "after",
+  "profile": "Production; no-launch-profile; unreachable local DB",
+  "status": 500,
+  "headers": {
+    "Content-Type": "application/problem+json",
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+  },
+  "body": {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+    "title": "\u041e\u043f\u0435\u0440\u0430\u0446\u0456\u044e \u043d\u0435 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u043e",
+    "status": 500,
+    "traceId": "00-e207f4c58add5c1b36f2691e3fa9c1c3-f20d95d1837211dd-00"
+  }
+}

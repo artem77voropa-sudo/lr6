@@ -1,0 +1,8 @@
+{
+  "stage": "review-start v0.5.0",
+  "request": "PUT own incident without CSRF header",
+  "status": 204,
+  "stateChanged": true,
+  "before": "Before CSRF check",
+  "after": "Changed without antiforgery token"
+}

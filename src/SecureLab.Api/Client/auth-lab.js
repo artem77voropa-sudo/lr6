@@ -1,8 +1,10 @@
+import { csrfFetch } from "./csrf.js";
+
 const element = id => document.getElementById(id);
 async function apiFetch(path, options = {}) {
   const url = new URL(path, location.origin);
   if (url.origin !== location.origin) throw new Error("Потрібна адреса цього застосунку.");
-  return fetch(url, { ...options, credentials: "same-origin" });
+  return csrfFetch(url, options);
 }
 function setState(state) {
   element("session-state").textContent = state === "active" ? "Сеанс активний" : state === "anonymous" ? "Не ввійшли" : "Стан сеансу невідомий";

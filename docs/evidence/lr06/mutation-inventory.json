@@ -1,0 +1,15 @@
+{
+  "environment": "Development",
+  "source": "actual /openapi/v1.json plus source and client review",
+  "mutations": [
+    "DELETE /api/incidents/{id}",
+    "POST /api/auth/login",
+    "POST /api/auth/logout",
+    "POST /api/auth/register",
+    "POST /api/incidents",
+    "POST /api/incidents/{id}/triage",
+    "PUT /api/incidents/{id}"
+  ],
+  "patchPublished": false,
+  "csrfDocumentationGap": "Runtime CSRF header/filter is not automatically represented as an OpenAPI parameter; explicit security-review perimeter is authoritative."
+}

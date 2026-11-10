@@ -21,6 +21,7 @@ public sealed class AuthorizationTests : IAsyncLifetime
         bob = await factory.LoginAsync("bob", password);
         morgan = await factory.LoginAsync("morgan", password);
         admin = await factory.LoginAsync("admin", password);
+        foreach (var client in new[] { alice, bob, morgan, admin }) await client.UseAntiforgeryTokenAsync();
     }
     public async Task DisposeAsync()
     {
@@ -82,7 +83,7 @@ public sealed class AuthorizationTests : IAsyncLifetime
         Assert.Equal(DbSeeder.AliceIncidentId, dto.Id);
         using var other = await alice.GetAsync($"/api/incidents/{DbSeeder.BobIncidentId}");
         Assert.Equal(HttpStatusCode.NotFound, other.StatusCode);
-        Assert.DoesNotContain("Невідома спроба входу", await other.Content.ReadAsStringAsync());
+        Assert.DoesNotContain("РќРµРІС–РґРѕРјР° СЃРїСЂРѕР±Р° РІС…РѕРґСѓ", await other.Content.ReadAsStringAsync());
         using var reverse = await bob.GetAsync($"/api/incidents/{DbSeeder.AliceIncidentId}");
         Assert.Equal(HttpStatusCode.NotFound, reverse.StatusCode);
         using var analyst = await morgan.GetAsync($"/api/incidents/{DbSeeder.AliceIncidentId}");
