@@ -1,0 +1,12 @@
+{
+  "reviewedLog": "review-development.log (local only)",
+  "privateValuesCompared": 8,
+  "privateValuesFound": 0,
+  "safeEvents": [
+    "Auth event login at 11/09/2026 18:01:26 +00:00: success; trace 0HNPUHDSJQJ97:00000001",
+    "Auth event login at 11/09/2026 18:01:26 +00:00: rejected; trace 0HNPUHDSJQJ99:00000001",
+    "authorization.denied subject=10000000-0000-0000-0000-000000000001 action=incident.triage resource=dc6eb1f3-6e82-44ac-a74f-f6bf004f65f8 result=denied utc=11/09/2026 18:01:27 +00:00 trace=00-e73e8f643355747951da217eac30de13-32569fb3c4adde41-00",
+    "Auth event login at 11/09/2026 18:01:27 +00:00: success; trace 0HNPUHDSJQJ9M:00000001",
+    "authorization.allowed subject=10000000-0000-0000-0000-000000000003 action=incident.triage resource=dc6eb1f3-6e82-44ac-a74f-f6bf004f65f8 result=success utc=11/09/2026 18:01:27 +00:00 trace=00-0ac5063bc748abd0669d4c92dbbf0494-6f133eddcc91e317-00"
+  ]
+}

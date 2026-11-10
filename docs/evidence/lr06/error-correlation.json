@@ -1,0 +1,6 @@
+{
+  "responseTraceId": "00-e207f4c58add5c1b36f2691e3fa9c1c3-f20d95d1837211dd-00",
+  "internalSafeEvent": "UnexpectedFailure trace=00-e207f4c58add5c1b36f2691e3fa9c1c3-f20d95d1837211dd-00 exceptionType=InvalidOperationException utc=11/09/2026 17:58:31 +00:00",
+  "sameTrace": true,
+  "syntheticCredentialsAbsentInRawLog": true
+}

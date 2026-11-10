@@ -1,0 +1,40 @@
+{
+  "transport": "HTTP loopback, not a TLS verification",
+  "environment": "Production",
+  "launchProfile": false,
+  "facts": [
+    {
+      "path": "/health",
+      "status": 200,
+      "mediaType": "application/json; charset=utf-8",
+      "location": null,
+      "scalarDocument": false,
+      "hsts": null
+    },
+    {
+      "path": "/openapi/v1.json",
+      "status": 404,
+      "mediaType": "application/problem+json",
+      "location": null,
+      "scalarDocument": false,
+      "hsts": null
+    },
+    {
+      "path": "/scalar/v1",
+      "status": 200,
+      "mediaType": "text/html",
+      "location": null,
+      "scalarDocument": false,
+      "hsts": null
+    },
+    {
+      "path": "/api/me",
+      "status": 401,
+      "mediaType": "application/problem+json",
+      "location": null,
+      "scalarDocument": false,
+      "hsts": null
+    }
+  ],
+  "scalarNote": "200 is the SPA fallback HTML, not Scalar documentation"
+}

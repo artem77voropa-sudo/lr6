@@ -1,0 +1,14 @@
+{
+  "stage": "before",
+  "profile": "Production; no-launch-profile; unreachable local DB",
+  "status": 500,
+  "headers": {
+    "Content-Type": "application/problem+json"
+  },
+  "body": {
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+    "title": "An error occurred while processing your request.",
+    "status": 500,
+    "traceId": "00-d6147e362a1fa450949f05c876153631-9623aeb7cf395f8a-00"
+  }
+}

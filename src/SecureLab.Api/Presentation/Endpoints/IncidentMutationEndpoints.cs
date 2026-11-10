@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using SecureLab.Api.Security;
 using Microsoft.EntityFrameworkCore;
 using SecureLab.Api.Application.Incidents;
 using SecureLab.Api.Data;
@@ -15,9 +16,9 @@ public static class IncidentMutationEndpoints
     public static void MapIncidentMutationEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup("/api/incidents").RequireAuthorization().WithTags("Incidents");
-        group.MapPut("/{id:guid}", UpdateAsync);
-        group.MapDelete("/{id:guid}", DeleteAsync);
-        group.MapPost("/{id:guid}/triage", TriageAsync);
+        group.MapPut("/{id:guid}", UpdateAsync).AddEndpointFilter<CsrfProtection>();
+        group.MapDelete("/{id:guid}", DeleteAsync).AddEndpointFilter<CsrfProtection>();
+        group.MapPost("/{id:guid}/triage", TriageAsync).AddEndpointFilter<CsrfProtection>();
         endpoints.MapGet("/api/incident-comments/{id:guid}", ReadCommentAsync).RequireAuthorization();
     }
 
@@ -77,6 +78,10 @@ public static class IncidentMutationEndpoints
             Note = "Первинна класифікація аналітиком.", CreatedAtUtc = row.UpdatedAtUtc
         });
         await db.SaveChangesAsync(ct);
+        logs.CreateLogger("SecureLab.Authorization").LogInformation(
+            "{EventName} subject={SubjectId} action={Action} resource={ResourceId} result={Result} utc={UtcTime} trace={TraceId}",
+            "authorization.allowed", access.UserId, "incident.triage", id, "success", DateTimeOffset.UtcNow,
+            Activity.Current?.Id ?? context.TraceIdentifier);
         return Results.NoContent();
     }
 

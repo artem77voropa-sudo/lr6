@@ -24,7 +24,7 @@ public sealed class CookieAndRateLimitTests(SecureLabApiFactory factory) : IClas
         using var client = host.CreateClient(new() { BaseAddress = new Uri(scheme + "://localhost"), AllowAutoRedirect = false });
         using var response = await client.PostAsJsonAsync("/api/auth/login", new { userName = "alice", password = Password });
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-        var cookies = response.Headers.GetValues("Set-Cookie").Where(v => v.StartsWith(".AspNetCore.Identity.Application=")).ToArray();
+        var cookies = response.Headers.GetValues("Set-Cookie").Where(v => v.StartsWith(".SecureLab.LR06.Identity=")).ToArray();
         Assert.True(cookies.Length == 1);
         var attributes = cookies[0].Split(';').Skip(1).Select(s => s.Trim().ToLowerInvariant()).ToArray();
         Assert.Contains("httponly", attributes);

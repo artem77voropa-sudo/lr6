@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "parameters": "--vulnerable --include-transitive",
+  "sources": [
+    "https://api.nuget.org/v3/index.json"
+  ],
+  "projects": [
+    {
+      "path": "C:/dev/securelab-lr06/src/SecureLab.Api/SecureLab.Api.csproj"
+    },
+    {
+      "path": "C:/dev/securelab-lr06/tests/SecureLab.Api.Tests/SecureLab.Api.Tests.csproj"
+    }
+  ]
+}

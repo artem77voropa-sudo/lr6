@@ -1,0 +1,369 @@
+{
+  "stage": "fixed",
+  "checks": [
+    {
+      "name": "description-marker",
+      "incidentId": "292d640a-0f40-4a21-9140-ef9791fd67d4",
+      "storedAndReturnedExactly": true,
+      "dom": {
+        "text": "<img src=x onerror=\"document.querySelector('#lab05-marker-target').setAttribute('data-lab05-marker','executed')\">",
+        "elements": 0,
+        "images": 0
+      },
+      "markerExecuted": null
+    },
+    {
+      "name": "comment-marker",
+      "parentId": "20000000-0000-0000-0000-000000000001",
+      "images": 0,
+      "markerExecuted": null
+    },
+    {
+      "name": "authorization-bob",
+      "status": 404
+    },
+    {
+      "name": "authorization-morgan",
+      "status": 200
+    },
+    {
+      "name": "legitimate-apostrophe",
+      "length": 17,
+      "exactText": true,
+      "elements": 0
+    },
+    {
+      "name": "legitimate-quotes",
+      "length": 24,
+      "exactText": true,
+      "elements": 0
+    },
+    {
+      "name": "legitimate-html",
+      "length": 28,
+      "exactText": true,
+      "elements": 0
+    },
+    {
+      "name": "legitimate-unicode",
+      "length": 16,
+      "exactText": true,
+      "elements": 0
+    },
+    {
+      "name": "legitimate-maximum",
+      "length": 4000,
+      "exactText": true,
+      "elements": 0
+    },
+    {
+      "name": "safe-dom-with-csp-bypassed",
+      "descriptionElements": 0,
+      "commentImages": 0,
+      "markerExecuted": false
+    },
+    {
+      "name": "REG-CSRF-01-browser",
+      "denied": 400,
+      "unchanged": true,
+      "accepted": 204,
+      "changed": true
+    },
+    {
+      "name": "mutation-after-reload",
+      "status": 201
+    },
+    {
+      "name": "mutation-after-new-login",
+      "status": 201
+    },
+    {
+      "name": "cors-4173-simple",
+      "readable": true,
+      "status": 200,
+      "responses": [
+        {
+          "method": "GET",
+          "path": "/health?probe=1794267473414",
+          "status": 200,
+          "allowOrigin": "http://localhost:4173",
+          "allowCredentials": "true",
+          "allowMethods": null,
+          "allowHeaders": null
+        }
+      ],
+      "network": [
+        {
+          "methodHint": "Fetch",
+          "url": "http://localhost:5086/health?probe=1794267473414",
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        }
+      ],
+      "networkResponseFacts": [
+        {
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        }
+      ],
+      "requestFacts": [
+        {
+          "method": "GET",
+          "url": "http://localhost:5086/health?probe=1794267473414",
+          "cookiePresent": false
+        }
+      ]
+    },
+    {
+      "name": "cors-4173-preflight",
+      "readable": true,
+      "status": 200,
+      "responses": [
+        {
+          "method": "GET",
+          "path": "/health?probe=1794267473674",
+          "status": 200,
+          "allowOrigin": "http://localhost:4173",
+          "allowCredentials": "true",
+          "allowMethods": null,
+          "allowHeaders": null
+        }
+      ],
+      "network": [
+        {
+          "methodHint": "Preflight",
+          "url": "http://localhost:5086/health?probe=1794267473674",
+          "status": 204,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Headers": "X-Lab-Cors-Probe",
+            "Access-Control-Allow-Methods": "GET",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        },
+        {
+          "methodHint": "Fetch",
+          "url": "http://localhost:5086/health?probe=1794267473674",
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        }
+      ],
+      "networkResponseFacts": [
+        {
+          "status": 204,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Headers": "X-Lab-Cors-Probe",
+            "Access-Control-Allow-Methods": "GET",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        },
+        {
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        }
+      ],
+      "requestFacts": [
+        {
+          "method": "GET",
+          "url": "http://localhost:5086/health?probe=1794267473674",
+          "cookiePresent": false
+        },
+        {
+          "method": "OPTIONS",
+          "url": "http://localhost:5086/health?probe=1794267473674",
+          "cookiePresent": false
+        }
+      ]
+    },
+    {
+      "name": "cors-4173-cookie",
+      "readable": true,
+      "status": 200,
+      "responses": [
+        {
+          "method": "GET",
+          "path": "/api/incidents?probe=1794267473892",
+          "status": 200,
+          "allowOrigin": "http://localhost:4173",
+          "allowCredentials": "true",
+          "allowMethods": null,
+          "allowHeaders": null
+        }
+      ],
+      "network": [
+        {
+          "methodHint": "Fetch",
+          "url": "http://localhost:5086/api/incidents?probe=1794267473892",
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        }
+      ],
+      "networkResponseFacts": [
+        {
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "http://localhost:4173"
+          }
+        }
+      ],
+      "requestFacts": [
+        {
+          "method": "GET",
+          "url": "http://localhost:5086/api/incidents?probe=1794267473892",
+          "cookiePresent": true
+        }
+      ]
+    },
+    {
+      "name": "cors-4174-simple",
+      "readable": false,
+      "status": null,
+      "responses": [],
+      "network": [
+        {
+          "methodHint": "Other",
+          "url": "http://localhost:4174/favicon.ico",
+          "status": 404,
+          "headers": {}
+        }
+      ],
+      "networkResponseFacts": [
+        {
+          "status": 404,
+          "headers": {}
+        },
+        {
+          "status": 200,
+          "headers": {}
+        }
+      ],
+      "requestFacts": [
+        {
+          "method": "GET",
+          "url": "http://localhost:5086/health?probe=1794267474309",
+          "cookiePresent": false
+        }
+      ]
+    },
+    {
+      "name": "cors-4174-preflight",
+      "readable": false,
+      "status": null,
+      "responses": [],
+      "network": [
+        {
+          "methodHint": "Preflight",
+          "url": "http://localhost:5086/health?probe=1794267474533",
+          "status": 204,
+          "headers": {}
+        }
+      ],
+      "networkResponseFacts": [
+        {
+          "status": 204,
+          "headers": {}
+        }
+      ],
+      "requestFacts": [
+        {
+          "method": "GET",
+          "url": "http://localhost:5086/health?probe=1794267474533"
+        },
+        {
+          "method": "OPTIONS",
+          "url": "http://localhost:5086/health?probe=1794267474533",
+          "cookiePresent": false
+        }
+      ]
+    },
+    {
+      "name": "cors-4174-cookie",
+      "readable": false,
+      "status": null,
+      "responses": [],
+      "network": [],
+      "networkResponseFacts": [
+        {
+          "status": 200,
+          "headers": {}
+        }
+      ],
+      "requestFacts": [
+        {
+          "method": "GET",
+          "url": "http://localhost:5086/api/incidents?probe=1794267474746",
+          "cookiePresent": true
+        }
+      ]
+    },
+    {
+      "name": "direct-http-disallowed-origin",
+      "status": 200,
+      "body": {
+        "status": "ready"
+      },
+      "allowOrigin": null
+    },
+    {
+      "name": "anonymous-cookie-probe",
+      "javascriptReadable": true,
+      "status": 401
+    },
+    {
+      "name": "headers-/",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "name": "headers-/browser-lab.html",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "name": "headers-/auth-lab.html",
+      "status": 200,
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "name": "csp-image-blocked",
+      "violations": [
+        {
+          "directive": "img-src",
+          "disposition": "enforce",
+          "blockedURI": "http://localhost:4173/x.png"
+        }
+      ]
+    }
+  ],
+  "browser": "156.0.8078.80",
+  "createdFixturesCleaned": 8
+}

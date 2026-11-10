@@ -40,6 +40,7 @@ public sealed class AuthenticationLoggingTests(SecureLabApiFactory factory) : IC
             ?? throw new InvalidOperationException("Set local SeedUsers__Password outside Git.");
         using var login = await client.PostAsJsonAsync("/api/auth/login", new { userName = "alice", password });
         Assert.Equal(System.Net.HttpStatusCode.NoContent, login.StatusCode);
+        await client.UseAntiforgeryTokenAsync();
         using var logout = await client.PostAsync("/api/auth/logout", null);
         using var invalid = await client.PostAsJsonAsync("/api/auth/login", new { userName = "absent", password });
         Assert.True(sink.Messages.Count >= 3);

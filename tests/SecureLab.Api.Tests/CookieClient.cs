@@ -5,7 +5,7 @@ namespace SecureLab.Api.Tests;
 
 public static class CookieClient
 {
-    public static async Task<HttpClient> LoginAsync(this SecureLabApiFactory factory, string userName, string password)
+    public static async Task<HttpClient> LoginAsync(this WebApplicationFactory<Program> factory, string userName, string password)
     {
         var client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
@@ -15,7 +15,7 @@ public static class CookieClient
         if (!response.IsSuccessStatusCode)
         {
             client.Dispose();
-            throw new InvalidOperationException("Study login failed (credentials omitted).");
+            throw new InvalidOperationException($"Study login failed: HTTP {(int)response.StatusCode} (credentials omitted).");
         }
         return client;
     }

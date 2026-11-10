@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using SecureLab.Api.Security;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ namespace SecureLab.Api.Scaffolding;
 public static class Lab03Identity
 {
     public const string LoginPolicy = "login";
+    public const string SearchPolicy = "incident-search";
 
     public static void AddLab03Identity(this WebApplicationBuilder builder)
     {
@@ -22,6 +24,7 @@ public static class Lab03Identity
         builder.Services.AddAuthorization();
         builder.Services.ConfigureApplicationCookie(options =>
         {
+            options.Cookie.Name = ".SecureLab.LR06.Identity";
             options.Cookie.HttpOnly = true;
             options.Cookie.SameSite = SameSiteMode.Lax;
             options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
@@ -45,16 +48,22 @@ public static class Lab03Identity
                 {
                     PermitLimit = 10, Window = TimeSpan.FromMinutes(1), QueueLimit = 0
                 }));
+            options.AddPolicy(SearchPolicy, context => RateLimitPartition.GetFixedWindowLimiter(
+                context.User.Identity?.IsAuthenticated == true
+                    && Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out var subject)
+                    ? "user:" + subject.ToString("D") : "ip:" + (context.Connection.RemoteIpAddress?.ToString() ?? "unknown"),
+                _ => new() { PermitLimit = 20, Window = TimeSpan.FromSeconds(10), QueueLimit = 0 }));
             options.OnRejected = async (context, cancellationToken) =>
             {
+                var search = context.HttpContext.Request.Path == "/api/incidents/search";
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
-                    .CreateLogger("SecureLab.Authentication");
-                LogEvent(logger, context.HttpContext, "login", "rate-limited");
+                    .CreateLogger(search ? "SecureLab.RateLimit" : "SecureLab.Authentication");
+                LogEvent(logger, context.HttpContext, search ? "search" : "login", "rate-limited");
                 if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
                     context.HttpContext.Response.Headers.RetryAfter =
                         Math.Ceiling(retryAfter.TotalSeconds).ToString(System.Globalization.CultureInfo.InvariantCulture);
-                await Results.Problem(statusCode: 429, title: "Забагато спроб входу",
-                    detail: "Зачекайте до завершення хвилинного вікна та повторіть вхід.")
+                await Results.Problem(statusCode: 429, title: search ? "Забагато пошукових запитів" : "Забагато спроб входу",
+                    detail: search ? "Повторіть пошук після завершення 10-секундного вікна." : "Зачекайте до завершення хвилинного вікна та повторіть вхід.")
                     .ExecuteAsync(context.HttpContext);
             };
         });
@@ -124,7 +133,7 @@ public static class Lab03Identity
             await signIn.SignOutAsync();
             LogEvent(logs.CreateLogger("SecureLab.Authentication"), context, "logout", "success");
             return Results.NoContent();
-        });
+        }).RequireAuthorization().AddEndpointFilter<CsrfProtection>();
         app.MapGet("/api/me", (HttpContext context) =>
         {
             if (!Guid.TryParse(context.User.FindFirstValue(ClaimTypes.NameIdentifier), out var id))

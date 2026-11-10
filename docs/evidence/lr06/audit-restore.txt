@@ -1,0 +1,3 @@
+  Определение проектов для восстановления...
+  Восстановлен C:\dev\securelab-lr06\src\SecureLab.Api\SecureLab.Api.csproj (за 558 мс).
+  Восстановлен C:\dev\securelab-lr06\tests\SecureLab.Api.Tests\SecureLab.Api.Tests.csproj (за 558 мс).

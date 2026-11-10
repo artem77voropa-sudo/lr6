@@ -1,0 +1,33 @@
+{
+  "scope": "review-development.log and after-broken.log; raw logs kept local",
+  "scenarios": [
+    {
+      "scenario": "successful login",
+      "evidence": "audit-events.json: Auth event login success"
+    },
+    {
+      "scenario": "failed login",
+      "evidence": "audit-events.json: Auth event login rejected"
+    },
+    {
+      "scenario": "denied protected action",
+      "evidence": "audit-events.json + http-review.json: Alice 403, state New"
+    },
+    {
+      "scenario": "validation error",
+      "safeDiagnostic": "Request finished HTTP/1.1 GET http://localhost:5086/api/incidents?status=Unknown - 400 - application/problem+json 8.7360ms"
+    },
+    {
+      "scenario": "unexpected error",
+      "evidence": "error-correlation.json: response trace equals safe diagnostic trace"
+    },
+    {
+      "scenario": "privileged transition",
+      "evidence": "audit-events.json + http-review.json: Morgan 204, state Triaged"
+    }
+  ],
+  "requestBodiesLogged": false,
+  "sensitiveParameterLoggingEnabled": false,
+  "credentialComparisonEvidence": "audit-events.json and error-correlation.json",
+  "limitation": "ReviewDiagnostics temporarily enables hosting request summaries only for synthetic local requests; no claim about all future logs."
+}
